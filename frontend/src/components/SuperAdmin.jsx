@@ -41,7 +41,7 @@ const SuperAdmin = () => {
         formDatas
       );
       // console.log(initialFormData)
-      toast.success("Client created successfully");
+      toast.success("Client Created Successfully");
       setFormData(initialFormData);
       setRefreshKey((prevKey) => prevKey + 1);
     } catch (error) {

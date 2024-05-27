@@ -39,7 +39,7 @@ const Admin = () => {
         "http://localhost:4000/admin/createAdminData",
         formDatas
       );
-      toast.success("Successfully created");
+      toast.success("Successfully Created");
       setFormData(initialFormData); // Reset form
       setRefreshKey((prevKey) => prevKey + 1); // Trigger refresh
     } catch (error) {

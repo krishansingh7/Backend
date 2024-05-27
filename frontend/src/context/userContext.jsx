@@ -36,7 +36,6 @@
 import { createContext, useState, useEffect, useCallback } from "react";
 
 const UserContext = createContext();
-console.log(UserContext)
 
 const UserProvider = ({ children }) => {
   const [userData, setUserData] = useState(() => {

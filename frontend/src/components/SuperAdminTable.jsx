@@ -26,7 +26,7 @@ const SuperAdminTable = () => {
       await axios.delete(
         `http://localhost:4000/superAdmin/deleteOneAdminData/${userId}`
       );
-      toast.success("Client deleted successfully")
+      toast.success("Client Deleted Successfully")
       setUsers(users.filter((user) => user._id !== userId));
     } catch (error) {
       toast.error("Error deleting user")

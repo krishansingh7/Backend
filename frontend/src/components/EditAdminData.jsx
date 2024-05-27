@@ -66,7 +66,7 @@ const EditAdminData = () => {
         `http://localhost:4000/superAdmin/updateOneAdminData/${id}`,
         formDatas
       );
-      toast.success("Client Data updated successfully!");
+      toast.success("Client Data Updated Successfully!");
       navigate("/superadmin");
     } catch (error) {
       toast.error("Error updating data!");
