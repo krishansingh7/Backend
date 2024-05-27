@@ -1,117 +1,106 @@
-import { useForm } from "react-hook-form";
+/* eslint-disable react/prop-types */
 import axios from "axios";
+import { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../../context/userContext";
+import { toast } from "react-toastify";
 
-const Login = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { setUserData } = useContext(UserContext);
 
-  const onSubmit = async (data) => {
-    const userInfo = {
-      email: data.email,
-      password: data.password,
-    };
-    await axios
-      .post("http://localhost:4000/user/login", userInfo)
-      .then((res) => {
-        console.log(res.data);
-        if (res.data) {
-          document.getElementById("my_modal_3").close();
-          setTimeout(() => {
-            window.location.reload();
-            localStorage.setItem("Users", JSON.stringify(res.data.user));
-          }, 1000);
-        }
+  const navigate = useNavigate();
+
+  axios.defaults.withCredentials=true;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post("http://localhost:4000/user/login", { email, password })
+      .then((response) => {
+        //  if (response.data === "Success") {
+        //    window.location.href = "/form";
+        //  }
+        // console.log(response);
+        toast.success("Logged in successfully");
+        console.log(response.data.user);
+        setUserData(response.data.user);
+        // localStorage.setItem("token", JSON.stringify(response.data.user));
+        // setUser(true);
+        navigate("/form");
       })
-      .catch((err) => {
-        if (err.response) {
-          console.log(err);
-          setTimeout(() => {}, 2000);
-        }
+      .catch((error) => {
+        toast.error(error?.response?.data?.message);
+        console.log(error);
       });
   };
 
   return (
-    <>
-      {/* <button
-        className="btn"
-        onClick={() => document.getElementById("my_modal_3").showModal()}
-      >
-        Login
-      </button> */}
-      <div className="">
-        <dialog id="my_modal_3" className="modal w-[40vmax] h-[25vmax] p-4">
-          <div className="modal-box">
-            <form onSubmit={handleSubmit(onSubmit)} method="dialog">
-              {/* if there is a button in form, it will close the modal */}
-              <button
-                className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-                onClick={() => document.getElementById("my_modal_3").close()}
-              >
-                ✕
-              </button>
-
-              <h3 className="font-bold text-lg">Login</h3>
-              {/* Email */}
-              <div className="mt-4 space-y-2">
-                <span>Email</span>
-                <br />
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  name="email"
-                  className="w-80 px-3 py-1 border rounded-md outline-none text-black"
-                  {...register("email", { required: true })}
-                />
-                <br />
-                {errors.email && (
-                  <span className="text-sm text-red-500">
-                    This field is required
-                  </span>
-                )}
-              </div>
-              {/* password */}
-              <div className="mt-4 space-y-2">
-                <span>Password</span>
-                <br />
-                <input
-                  type="password"
-                  placeholder="Enter your password"
-                  name="password"
-                  className="w-80 px-3 py-1 border rounded-md outline-none text-black"
-                  {...register("password", { required: true })}
-                />
-                <br />
-                {errors.password && (
-                  <span className="text-sm text-red-500">
-                    This field is required
-                  </span>
-                )}
-              </div>
-
-              {/* Button */}
-              <div className="flex justify-around mt-6">
-                <button className="bg-blue-500 text-white rounded-md px-3 py-1 hover:bg-blue-700 duration-200">
-                  Login
-                </button>
-                <p>
-                  Not registered?{" "}
-                  <a
-                    href="/signup"
-                    className="underline text-blue-500 cursor-pointer"
-                  >
-                    Sign up
-                  </a>
-                </p>
-              </div>
-            </form>
+    <div className="flex items-center justify-center min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full bg-gray-100 p-8 rounded-lg shadow-2xl space-y-8">
+        <div>
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            Log in to your account
+          </h2>
+        </div>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <div className="rounded-md shadow-sm space-y-4">
+            <div>
+              <label htmlFor="email-address" className="sr-only">
+                Email address
+              </label>
+              <input
+                id="email-address"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="password" className="sr-only">
+                Password
+              </label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
           </div>
-        </dialog>
+
+          <div>
+            <button
+              type="submit"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Log in
+            </button>
+          </div>
+          <div className="flex justify-around">
+            <span className="">Already have an account?</span>
+            <Link
+              to="/signup"
+              className="group relative flex justify-center py-1 px-3 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Signup
+            </Link>
+          </div>
+        </form>
       </div>
-    </>
+    </div>
   );
-};
+}
 
 export default Login;

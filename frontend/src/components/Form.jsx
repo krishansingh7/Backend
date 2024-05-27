@@ -1,24 +1,26 @@
+/* eslint-disable react/prop-types */
+
+import axios from "axios";
 import { useState } from "react";
+import FormTable from "./FormTable";
 
 const Form = () => {
   const [formData, setFormData] = useState({
     mozDA: "1",
-    toDA:"100",
+    DAto: "100",
     categories: "",
     websiteLanguage: "",
-    ahrefsDR:"1",
-    toDR:"100",
-    linkType:"",
-    maxLinkAllow:"",
-    markedAsSponsored:"",
-    price:"1",
-    toPrice:"100000",
-    monthlyTraffic:"",
-    mozSpamScore:"",
-    serviceType:"",
-    siteWorkedWith:"",
-    publisherRole:"",
+    ahrefsDR: "1",
+    DRto: "100",
+    linkType: "",
+    price: "1",
+    priceTo: "100000",
+    monthlyTraffic: "",
+    mozSpamScore: "",
+    publisherURL: "",
   });
+
+  const [users, setUsers] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,109 +30,118 @@ const Form = () => {
     });
   };
 
+  axios.defaults.withCredentials = true;
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission, e.g., send data to backend
-    console.log(formData);
+    axios
+      .post("http://localhost:4000/form/getFilteredData", formData)
+      .then((response) => {
+        console.log(response.data);
+        setUsers(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
-    <div>
+    <div className="p-4">
       <h1 className="text-2xl text-white bg-blue-700 p-2 my-2">FAQ</h1>
-      <form onSubmit={handleSubmit} className="bg-gray-200 shadow-xl p-4">
+
+      <form
+        onSubmit={handleSubmit}
+        className="bg-gray-200 shadow-xl p-4 relative"
+      >
         {/* 1st Row */}
-        <div className="flex items-center gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           <div className="flex flex-col">
-            <label htmlFor="mozDA">Moz DA </label>
+            <label htmlFor="mozDA">Moz DA</label>
             <input
               type="number"
               id="mozDA"
               name="mozDA"
               min="1"
+              max="100"
               value={formData.mozDA}
               onChange={handleChange}
-              // required
-              className="focus:outline focus:outline-blue-400"
+              className="focus:outline focus:outline-blue-400 p-2"
             />
           </div>
           <div className="flex flex-col">
-            <label htmlFor="toDA">To </label>
+            <label htmlFor="DAto">To</label>
             <input
               type="number"
-              id="toDA"
-              name="toDA"
+              id="DAto"
+              name="DAto"
               min="1"
               max="100"
-              value={formData.toDA}
+              value={formData.DAto}
               onChange={handleChange}
-              // required
-              className="focus:outline focus:outline-blue-400"
+              className="focus:outline focus:outline-blue-400 p-2"
             />
           </div>
           <div className="flex flex-col">
-            <label htmlFor="categories">Categories </label>
+            <label htmlFor="categories">Categories</label>
             <select
               id="categories"
               name="categories"
               value={formData.categories}
               onChange={handleChange}
-              // required
-              className="focus:outline focus:outline-blue-400 cursor-pointer"
+              className="focus:outline focus:outline-blue-400 cursor-pointer p-2"
             >
               <option value="allCategories">All</option>
-              <option value="agriculture">Agriculture</option>
-              <option value="animalsAndPets">Animals and Pets</option>
-              <option value="art">Art</option>
-              <option value="automobiles">Automobiles</option>
-              <option value="business">Business</option>
-              <option value="books">Books</option>
-              <option value="beauty">Beauty</option>
-              <option value="careerAndEmployment">Career and Employment</option>
-              <option value="computer">Computer</option>
-              <option value="constructionAndRepairs">
+              <option value="Agriculture">Agriculture</option>
+              <option value="Animals and Pets">Animals and Pets</option>
+              <option value="Art">Art</option>
+              <option value="Automobiles">Automobiles</option>
+              <option value="Business">Business</option>
+              <option value="Books">Books</option>
+              <option value="Beauty">Beauty</option>
+              <option value="Career and Employment">
+                Career and Employment
+              </option>
+              <option value="Computer">Computer</option>
+              <option value="Construction and Repairs">
                 Construction and Repairs
               </option>
-              <option value="culture">Culture</option>
-              <option value="ecommerce">E-commerce</option>
-              <option value="education">Education</option>
-              <option value="entertainment">Entertainment</option>
-              <option value="environment">Environment</option>
-              <option value="fashion">Fashion</option>
-              <option value="finance">Finance</option>
-              <option value="webDevelopment">Web Development</option>
-              <option value="appDevelopment">App Development</option>
-              {/* Add more options as needed */}
+              <option value="Culture">Culture</option>
+              <option value="E-commerce">E-commerce</option>
+              <option value="Education">Education</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Environment">Environment</option>
+              <option value="Fashion">Fashion</option>
+              <option value="Finance">Finance</option>
+              <option value="Web Development">Web Development</option>
+              <option value="App Development">App Development</option>
             </select>
           </div>
           <div className="flex flex-col">
-            <label htmlFor="websiteLanguage">Website Language </label>
+            <label htmlFor="websiteLanguage">Website Language</label>
             <select
               id="websiteLanguage"
               name="websiteLanguage"
               value={formData.websiteLanguage}
               onChange={handleChange}
-              // required
-              className="focus:outline focus:outline-blue-400 cursor-pointer"
+              className="focus:outline focus:outline-blue-400 cursor-pointer p-2"
             >
               <option value="allLanguage">All</option>
-              <option value="english">English</option>
-              <option value="hindi">Hindi</option>
-              <option value="punjabi">Punjabi</option>
-              <option value="marathi">Marathi</option>
-              <option value="gujarati">Gujarati</option>
-              <option value="urdu">Urdu</option>
-              <option value="odia">Odia</option>
-              <option value="tamil">Tamil</option>
-              <option value="telegu">Telegu</option>
-              <option value="bengali">Bengali</option>
-              <option value="kannada">Kannada</option>
-              {/* Add more options as needed */}
+              <option value="English">English</option>
+              <option value="Hindi">Hindi</option>
+              <option value="Punjabi">Punjabi</option>
+              <option value="Marathi">Marathi</option>
+              <option value="Gujarati">Gujarati</option>
+              <option value="Urdu">Urdu</option>
+              <option value="Odia">Odia</option>
+              <option value="Tamil">Tamil</option>
+              <option value="Telugu">Telugu</option>
+              <option value="Bengali">Bengali</option>
+              <option value="Kannada">Kannada</option>
             </select>
           </div>
         </div>
 
         {/* 2nd Row */}
-        <div className="flex items-center gap-5 my-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 my-4">
           <div className="flex flex-col">
             <label htmlFor="ahrefsDR">Ahrefs DR</label>
             <input
@@ -138,80 +149,59 @@ const Form = () => {
               id="ahrefsDR"
               name="ahrefsDR"
               min="1"
+              max="100"
               value={formData.ahrefsDR}
               onChange={handleChange}
-              // required
-              className="focus:outline focus:outline-blue-400"
+              className="focus:outline focus:outline-blue-400 p-2"
             />
           </div>
           <div className="flex flex-col">
-            <label htmlFor="toDR">To</label>
+            <label htmlFor="DRto">To</label>
             <input
               type="number"
-              id="toDR"
-              name="toDR"
+              id="DRto"
+              name="DRto"
               min="1"
               max="100"
-              value={formData.toDR}
+              value={formData.DRto}
               onChange={handleChange}
-              // required
-              // placeholder="100"
-              className="focus:outline focus:outline-blue-400"
+              className="focus:outline focus:outline-blue-400 p-2"
             />
           </div>
           <div className="flex flex-col">
-            <label htmlFor="linkType">Link Type:</label>
+            <label htmlFor="linkType">Link Type</label>
             <select
               id="linkType"
               name="linkType"
               value={formData.linkType}
               onChange={handleChange}
-              // required
-              className="focus:outline focus:outline-blue-400 cursor-pointer"
+              className="focus:outline focus:outline-blue-400 cursor-pointer p-2"
             >
-              <option value="">All</option>
-              <option value="doFollow">Do Follow</option>
-              <option value="noFollow">No Follow</option>
-              {/* Add more options as needed */}
+              <option value="All">All</option>
+              <option value="Do Follow">Do Follow</option>
+              <option value="No Follow">No Follow</option>
             </select>
           </div>
           <div className="flex flex-col">
-            <label htmlFor="maxLinkAllow">Max Link Allow</label>
-            <select
-              id="maxLinkAllow"
-              name="maxLinkAllow"
-              value={formData.maxLinkAllow}
+            <label htmlFor="publisherURL" className="font-medium">
+              Publisher URL
+            </label>
+            <input
+              type="url"
+              id="publisherURL"
+              name="publisherURL"
+              title="Please ensure to provide proper format of the url"
+              pattern="https?://.*"
+              placeholder="https://www.google.com"
+              value={formData.publisherURL}
               onChange={handleChange}
-              // required
-              className="focus:outline focus:outline-blue-400 cursor-pointer"
-            >
-              <option value="all">All</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              {/* Add more options as needed */}
-            </select>
-          </div>
-          <div className="flex flex-col">
-            <label htmlFor="markedAsSponsored">Marked As Sponsored</label>
-            <select
-              id="markedAsSponsored"
-              name="markedAsSponsored"
-              value={formData.markedAsSponsored}
-              onChange={handleChange}
-              // required
-              className="focus:outline focus:outline-blue-400 cursor-pointer"
-            >
-              <option value="all">All</option>
-              <option value="no">No</option>
-              <option value="yes">Yes</option>
-              {/* Add more options as needed */}
-            </select>
+              className="focus:outline focus:outline-blue-400 p-2"
+            />
           </div>
         </div>
 
         {/* 3rd Row */}
-        <div className="flex items-center gap-5 mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-4">
           <div className="flex flex-col">
             <label htmlFor="price">Price</label>
             <input
@@ -221,24 +211,20 @@ const Form = () => {
               min="1"
               value={formData.price}
               onChange={handleChange}
-              // required
-              // placeholder="1"
-              className="focus:outline focus:outline-blue-400"
+              className="focus:outline focus:outline-blue-400 p-2"
             />
           </div>
           <div className="flex flex-col">
-            <label htmlFor="toPrice">To </label>
+            <label htmlFor="priceTo">To</label>
             <input
               type="number"
-              id="toPrice"
-              name="toPrice"
+              id="priceTo"
+              name="priceTo"
               min="1"
               max="100000"
-              value={formData.toPrice}
+              value={formData.priceTo}
               onChange={handleChange}
-              // required
-              // placeholder="100000"
-              className="focus:outline focus:outline-blue-400"
+              className="focus:outline focus:outline-blue-400 p-2"
             />
           </div>
           <div className="flex flex-col">
@@ -248,53 +234,51 @@ const Form = () => {
               name="monthlyTraffic"
               value={formData.monthlyTraffic}
               onChange={handleChange}
-              // required
-              className="focus:outline focus:outline-blue-400 cursor-pointer"
+              className="focus:outline focus:outline-blue-400 cursor-pointer p-2"
             >
               <option value="allMonthlyTraffic">All</option>
-              <option value="monthlyTraffic1000">
-                Mothly Traffic {">="} 1000
+              <option value="Monthly Traffic >= 1000">
+                Monthly Traffic {">="} 1000
               </option>
-              <option value="monthlyTraffic10000">
-                Mothly Traffic {">="} 10 000
+              <option value="Monthly Traffic >= 10000">
+                Monthly Traffic {">="} 10,000
               </option>
-              <option value="monthlyTraffic50000">
-                Mothly Traffic {">="} 50 000
+              <option value="Monthly Traffic >= 50000">
+                Monthly Traffic {">="} 50,000
               </option>
-              <option value="monthlyTraffic100000">
-                Mothly Traffic {">="} 100 000
+              <option value="Monthly Traffic >= 100000">
+                Monthly Traffic {">="} 100,000
               </option>
-              <option value="monthlyTraffic200000">
-                Mothly Traffic {">="} 200 000
+              <option value="Monthly Traffic >= 200000">
+                Monthly Traffic {">="} 200,000
               </option>
-              <option value="monthlyTraffic300000">
-                Mothly Traffic {">="} 300 000
+              <option value="Monthly Traffic >= 300000">
+                Monthly Traffic {">="} 300,000
               </option>
-              <option value="monthlyTraffic400000">
-                Mothly Traffic {">="} 400 000
+              <option value="Monthly Traffic >= 400000">
+                Monthly Traffic {">="} 400,000
               </option>
-              <option value="monthlyTraffic500000">
-                Mothly Traffic {">="} 500 000
+              <option value="Monthly Traffic >= 500000">
+                Monthly Traffic {">="} 500,000
               </option>
-              <option value="monthlyTraffic600000">
-                Mothly Traffic {">="} 600 000
+              <option value="Monthly Traffic >= 600000">
+                Monthly Traffic {">="} 600,000
               </option>
-              <option value="monthlyTraffic700000">
-                Mothly Traffic {">="} 700 000
+              <option value="Monthly Traffic >= 700000">
+                Monthly Traffic {">="} 700,000
               </option>
-              <option value="monthlyTraffic800000">
-                Mothly Traffic {">="} 800 000
+              <option value="Monthly Traffic >= 800000">
+                Monthly Traffic {">="} 800,000
               </option>
-              <option value="monthlyTraffic900000">
-                Mothly Traffic {">="} 900 000
+              <option value="Monthly Traffic >= 900000">
+                Monthly Traffic {">="} 900,000
               </option>
-              <option value="monthlyTraffic1000000">
-                Mothly Traffic {">="} 1 000 000
+              <option value="Monthly Traffic >= 1000000">
+                Monthly Traffic {">="} 1,000,000
               </option>
-              <option value="monthlyTraffic10000000">
-                Mothly Traffic {">="} 10 000 000
+              <option value="Monthly Traffic >= 10000000">
+                Monthly Traffic {">="} 10,000,000
               </option>
-              {/* Add more options as needed */}
             </select>
           </div>
           <div className="flex flex-col">
@@ -304,100 +288,38 @@ const Form = () => {
               name="mozSpamScore"
               value={formData.mozSpamScore}
               onChange={handleChange}
-              // required
-              className="focus:outline focus:outline-blue-400 cursor-pointer"
+              className="focus:outline focus:outline-blue-400 cursor-pointer p-2"
             >
               <option value="allMozSpamScore">All</option>
-              <option value="spamScore01">Spam Score {"<="} 01</option>
-              <option value="spamScore02">Spam Score {"<="} 02</option>
-              <option value="spamScore05">Spam Score {"<="} 05</option>
-              <option value="spamScore10">Spam Score {"<="} 10</option>
-              <option value="spamScore20">Spam Score {"<="} 20</option>
-              <option value="spamScore30">Spam Score {"<="} 30</option>
-              {/* Add more options as needed */}
-            </select>
-          </div>
-          <div className="flex flex-col">
-            <label htmlFor="serviceType">Service Type</label>
-            <select
-              id="serviceType"
-              name="serviceType"
-              value={formData.serviceType}
-              onChange={handleChange}
-              // required
-              className="focus:outline focus:outline-blue-400 cursor-pointer"
-            >
-              <option value="allServiceType">All</option>
-              <option value="contentPlacement">Content Placement</option>
-              <option value="contentCreation">
-                Content Creation & Placement
-              </option>
-              <option value="linkInsArticle">
-                Link Insertions In An Existing Article
-              </option>
-              {/* Add more options as needed */}
+              <option value="Spam Score <= 01">Spam Score {"<="} 01</option>
+              <option value="Spam Score <= 02">Spam Score {"<="} 02</option>
+              <option value="Spam Score <= 05">Spam Score {"<="} 05</option>
+              <option value="Spam Score <= 10">Spam Score {"<="} 10</option>
+              <option value="Spam Score <= 20">Spam Score {"<="} 20</option>
+              <option value="Spam Score <= 30">Spam Score {"<="} 30</option>
             </select>
           </div>
         </div>
 
-        {/* 4th Row */}
-
-        <div className="flex items-center justify-between">
-          <div className="flex gap-5">
-            {" "}
-            <div className="flex flex-col">
-              <label htmlFor="siteWorkedWith">
-                Sites {"I've (haven't)"} Worked With
-              </label>
-              <select
-                id="siteWorkedWith"
-                name="siteWorkedWith"
-                value={formData.siteWorkedWith}
-                onChange={handleChange}
-                // required
-                className="focus:outline focus:outline-blue-400 cursor-pointer"
-              >
-                <option value="allWebsitesWorkedWith">All Websites</option>
-                <option value="excludeSitesWorkedWith">
-                  Exclude Sites {"I've"} Worked With
-                </option>
-                <option value="onlySitesWorkedWith">
-                  Only Sites {"I've"} Worked With
-                </option>
-                {/* Add more options as needed */}
-              </select>
-            </div>
-            <div className="flex flex-col">
-              <label htmlFor="publisherRole">Publisher Role</label>
-              <select
-                id="publisherRole"
-                name="publisherRole"
-                value={formData.publisherRole}
-                onChange={handleChange}
-                // required
-                className="focus:outline focus:outline-blue-400 cursor-pointer"
-              >
-                <option value="allWebsitesRole">All Websites</option>
-                <option value="websitesByOwner">Websites added by Owner</option>
-                <option value="websitesByContributors">
-                  Websites added by Contributors
-                </option>
-                {/* Add more options as needed */}
-              </select>
-            </div>
-          </div>
-
-          {/* Buttons here */}
-          <div className="flex gap-7">
-            <button type="reset" className="py-1 px-2 bg-gray-900 text-white">
-              Reset
-            </button>
-            <button type="submit" className="py-1 px-2 bg-gray-900 text-white">
-              Search
-            </button>
-          </div>
+        {/* Buttons */}
+        <div className="flex items-center justify-end space-x-2">
+          <button
+            type="reset"
+            className="py-2 px-4 bg-gray-900 text-white rounded"
+          >
+            Reset
+          </button>
+          <button
+            type="submit"
+            className="py-2 px-4 bg-blue-600 text-white rounded"
+          >
+            Search
+          </button>
         </div>
       </form>
+
+      {/* Display User Fetched Data */}
+      <FormTable users={users} />
     </div>
   );
 };
