@@ -3,9 +3,11 @@
 import axios from "axios";
 import { useState } from "react";
 import FormTable from "./FormTable";
+import { toast } from "react-toastify";
 
 const Form = () => {
-  const [formData, setFormData] = useState({
+
+  const initialFormData = {
     mozDA: "1",
     DAto: "100",
     categories: "",
@@ -18,7 +20,9 @@ const Form = () => {
     monthlyTraffic: "",
     mozSpamScore: "",
     publisherURL: "",
-  });
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
 
   const [users, setUsers] = useState([]);
 
@@ -30,6 +34,10 @@ const Form = () => {
     });
   };
 
+  const handleReset = () => {
+    setFormData(initialFormData)
+  }
+
   axios.defaults.withCredentials = true;
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,9 +46,11 @@ const Form = () => {
       .then((response) => {
         console.log(response.data);
         setUsers(response.data);
+        toast.success("Data Fetch Successfully");
       })
       .catch((error) => {
         console.log(error);
+        toast.error(error.message);
       });
   };
 
@@ -105,7 +115,7 @@ const Form = () => {
                 Construction and Repairs
               </option>
               <option value="Culture">Culture</option>
-              <option value="E-commerce">E-commerce</option>
+              <option value="Ecommerce">E-commerce</option>
               <option value="Education">Education</option>
               <option value="Entertainment">Entertainment</option>
               <option value="Environment">Environment</option>
@@ -305,6 +315,7 @@ const Form = () => {
         <div className="flex items-center justify-end space-x-2">
           <button
             type="reset"
+            onClick={handleReset}
             className="py-2 px-4 bg-gray-900 text-white rounded"
           >
             Reset

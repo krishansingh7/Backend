@@ -19,7 +19,7 @@ const adminFormDataSchema = new mongoose.Schema({
   websiteLanguage: { type: String },
   ahrefsDR: { type: Number, min: 1, max: 100 },
   linkType: { type: String, enum: ["Do Follow", "No Follow"] },
-  price: { type: Number, min: 1, max: 10000 },
+  price: { type: Number, min: 1, max: 100000 },
   monthlyTraffic: { type: String },
   mozSpamScore: { type: String },
 });

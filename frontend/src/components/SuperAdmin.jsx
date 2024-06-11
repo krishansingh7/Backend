@@ -10,12 +10,12 @@ const SuperAdmin = () => {
     publisherName: "",
     publisherEmail: "",
     publisherPhoneNo: "",
-    mozDA: "",
+    mozDA: "1",
     categories: "Agriculture",
     websiteLanguage: "English",
-    ahrefsDR: "",
+    ahrefsDR: "1",
     linkType: "Do Follow",
-    price: "",
+    price: "1",
     monthlyTraffic: "Monthly Traffic >= 1000",
     mozSpamScore: "Spam Score <= 01",
     // siteWorkedWith: "",
@@ -91,17 +91,17 @@ const SuperAdmin = () => {
             >
               {/* Options */}
               <option value="Agriculture">Agriculture</option>
-              <option value="Animals And Pets">Animals and Pets</option>
+              <option value="Animals and Pets">Animals and Pets</option>
               <option value="Art">Art</option>
               <option value="Automobiles">Automobiles</option>
               <option value="Business">Business</option>
               <option value="Books">Books</option>
               <option value="Beauty">Beauty</option>
-              <option value="Career And Employment">
+              <option value="Career and Employment">
                 Career and Employment
               </option>
               <option value="Computer">Computer</option>
-              <option value="Construction And Repairs">
+              <option value="Construction and Repairs">
                 Construction and Repairs
               </option>
               <option value="Culture">Culture</option>
@@ -135,7 +135,7 @@ const SuperAdmin = () => {
               <option value="Urdu">Urdu</option>
               <option value="Odia">Odia</option>
               <option value="Tamil">Tamil</option>
-              <option value="Telegu">Telegu</option>
+              <option value="Telugu">Telugu</option>
               <option value="Bengali">Bengali</option>
               <option value="Kannada">Kannada</option>
             </select>
@@ -206,7 +206,7 @@ const SuperAdmin = () => {
               id="price"
               name="price"
               min="1"
-              max="10000"
+              max="100000"
               required
               placeholder="1"
               value={formDatas.price}
@@ -399,7 +399,7 @@ const SuperAdmin = () => {
           </button>
         </div>
       </form>
-      ;
+  
       <SuperAdminTable key={refreshKey} />
     </div>
   );

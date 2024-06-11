@@ -187,7 +187,7 @@ export const getFilteredData = async (req, res) => {
         if (data.length) return res.json(data);
       }
     }
-
+ 
     // If no conditions match, return the initial filtered users or empty array
     res.json(users.length ? users : []);
   } catch (error) {
